@@ -1,25 +1,40 @@
-import logo from './logo.svg';
-import './App.css';
+import React, {useState} from 'react';
 
-function App() {
+const App = () => {
+
+    const [main, setMain] = useState([])
+    const [create, setCreate] = useState('')
+
+    const push = (event) => {
+        setCreate(event.target.value)
+    }
+
+    const menu = () => {
+        setMain([...main, create])
+        setCreate('')
+    }
+
+    const buttonType = (id) => {
+      const param = [...main]
+        param[id] = create
+        setMain(param)
+        setCreate('')
+    }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+      <div>
+
+          <form onSubmit={(event) => event.preventDefault() }>
+              <input type="text" value={create} onInput={(e) => push(e)}/>
+              <button type='button' disabled={!create} onClick={menu}>Добавить</button>
+              {main.length > 0 ? (main.map((type, id) => (<div key={id}>
+                  <h2>{type}</h2>
+                  <button type='button' disabled={!create} onClick={() => buttonType(id)}>Поменять</button>
+              </div>))): (<p>Список пуст</p>)}
+          </form>
+
+      </div>
   );
-}
+};
 
 export default App;
